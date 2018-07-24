@@ -54,6 +54,7 @@ sign($v)
 function used by execution nodes to sign a smart contract hash.
 If it is a new hash it verifies if the last one has been signed by all nodes.
 If the node is the last one on the chain list it frees the dapp for a new hash.
+This prevents a breach of security (theres proabbly better ways to do it)
 
 ```
 get_data($arquivo)
