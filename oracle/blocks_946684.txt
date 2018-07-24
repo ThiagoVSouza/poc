@@ -1,0 +1,8 @@
+/*
+
+Example of the blocks of one dapp on the blockchain
+Besides the main block list there's a specific file for each dapp (its a shortcut to simulate a blockchain)
+
+*/
+
+{"i1":{"content":"hash:ccbab828cb86508dab07f3fe581d7a9b","hash":"b8db335809a8c767e3ac5ec18f3d1ae3"},"i2":{"content":"add_node:execnode1","hash":"47fc74d507877a2eb3375928c93a89f8"},"i3":{"content":"add_node:execnode2","hash":"61b63c809250e60f2921a4b9780e58e3"},"i4":{"content":"add_node:execnode3","hash":"327f70f8ea3f515fc42a9c3be0d214e5"},"i5":{"content":"hash:ccbab828cb86508dab07f3fe581d7a9b","hash":"fea8c4e8e378f1e448dc8b21f419536b"},"i6":{"content":"sign:execnode1","hash":"f371bc96db0034d092ae3e3780ef79d8"},"i7":{"content":"sign:execnode2","hash":"f9482b37282d60e753e3f7b802fa9f47"},"i8":{"content":"sign:execnode3","hash":"7f40530c6fdf4af8c125a615660af4a6"},"i9":{"content":"hash:bee27fe02e3af045d8aeaa1e8814c2f6","hash":"1f194bf5da3b3f28324bf2bb406030f7"},"i10":{"content":"sign:execnode1","hash":"2f701b65a2f9f4242dde1cf1f15a4c82"},"i11":{"content":"sign:execnode2","hash":"03788ae7c75317d8b40cb7d1fdf73c39"},"i12":{"content":"sign:execnode3","hash":"20045fa0af5e74d328762ab8cc5884fe"},"i13":{"content":"hash:a69254e0150f7a02ce2e7d6bf1958198","hash":"ebf718d8be7a425abd03d4f0076e8d85"},"i14":{"content":"sign:execnode1","hash":"201944b039ffbd7af66c386e22952ad0"},"i15":{"content":"sign:execnode2","hash":"82d5d53fc3c763cb3c40e3f57e7cb5cd"},"i16":{"content":"sign:execnode3","hash":"9c6678a1688a61e29cf813862c22754d"}}
