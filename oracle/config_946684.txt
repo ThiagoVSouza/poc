@@ -1,1 +1,9 @@
-{"chain":"execnode1,execnode2,execnode3,","current":"empty","sign":"empty","status":"active"}
+{
+
+  "chain":"execnode1,
+  execnode2,execnode3,
+  ","current":"empty",
+  "sign":"empty",
+  "status":"active"
+
+}
