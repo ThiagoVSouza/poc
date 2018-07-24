@@ -2,7 +2,10 @@
 
 ## Basic Structure
 
-I am not using a database to store information. I am creating files to simulate a database.
+- the oracle node is only accessed by execution nodes.
+- it simulates a full blockchain. all data is stored in a blockchain format (content+hash / this hash includes the previous hash int it to create a chain).
+- I am not using a database to store information. I am creating files to simulate a database.
+
 
 ```
 The api.php
