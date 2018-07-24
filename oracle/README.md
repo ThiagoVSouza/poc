@@ -4,10 +4,30 @@
 
 I am not using a database to store information. I am creating files to simulate a database.
 
-**The api.php** - is the file that holds and execute all the functions.
+```
+The api.php
+``` 
+Is the file that holds and execute all the functions.
 
-**blocks.txt** - json file that has a sequence of all blocks generated. 
+```
+blocks.txt
+```
+Json file that has a sequence of all blocks generated. 
 
+```
+blocks_ids.txt
+```
+Json file that has the ids of every dapp generated (shortcut as an index)
+
+```
+config_946684.txt.txt
+```
+Json file that holds basic configuration of a dapp. Shortcut to handle basic information for a dapp (so I dont need to manually read all the blocks to get the information)
+
+```
+blocks_946684.txt
+```
+Json file that holds all blocks from one specific dapp. Its a shortcut just in case I want to retrieve all blocks from an specific dapp.
 
 
 ## Important Functions
