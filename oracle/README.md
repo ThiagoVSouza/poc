@@ -6,6 +6,7 @@
 - I am not doing any authentication of those nodes (in order to deliver it fast I removed this part)
 - it simulates a full blockchain. all data is stored in a blockchain format (new hash = md5(current_content + previous_hash)). 
 - I am not using a database to store information. I am creating files with a JSON format to simulate a database.
+- The code is just functions with no classes or libraries. (the code is also not pretty but the point is that it works).
 - Main files in this folder:
 
 ```
