@@ -1,0 +1,7 @@
+{
+    "i0":{
+    
+        "status":"active","user":"thiago","name":"teste 1","id":"616390","chain":"616390@alphaid,392012@gamaid,838395@betaid,"
+        
+    }
+}
