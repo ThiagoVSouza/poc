@@ -2,9 +2,16 @@
 
 ## Overview
 
-Execution nodes for this current proof of concept.
+Execution nodes are the nodes that store all the content of a smart contract and also execute it.
+A Smart contract in this POC has 4 parts: 
 
-The node also has a copy of the files in the smartcontract folder. It is used as a template for deploying a new dapp.
+- the file (with all the functions that will be automatically executed)
+- data (which carries all the data associated with the smart contract)
+- config (has basic configuration, the most important part is the custom name given by the user who deployed it)
+- permissions (it is used to identify the roles of the users, with this we can have a permissioned system)
+
+Theres a sample copy of those files for one deployed smart contract I used with spencer.
+The node also has a copy of the files in the smartcontract folder. It is used as a template for deploying a new dapp and generating the initial sample files mentioned above..
 
 ## Main functions
 
