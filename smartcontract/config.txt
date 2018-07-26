@@ -1,0 +1,7 @@
+{
+
+	"Template":"Escrow v1.0",
+	"Name":"_myname",
+	"Nodes":"_mychain"
+
+}
