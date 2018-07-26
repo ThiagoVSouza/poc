@@ -1,0 +1,6 @@
+{
+  "status":"1",
+  "change_buyer":"0",
+  "change_seller":"0",
+  "conditions":";buyer:Hi ! This is my condition: paint my house blue;seller: Thirty grand and some stuff"
+}
