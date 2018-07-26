@@ -1,1 +1,467 @@
-// Smart contract
+
+function init($v){
+
+	change_profile("buyer",$v["buyer"]);
+	change_profile("seller",$v["seller"]);
+	change_profile("mediator",$v["mediator"]);
+	
+}
+
+function condition($v){
+
+	if( $v["sender"] != "buyer" && $v["sender"] != "seller" ){
+	
+		return "Error: Only the buyer or the seller can add a condition.";
+	
+	}
+	
+	if( get("status") != "1" ){
+	
+		return "Error: You can only add a condition when the contract status is set to active (1).";
+	
+	}
+	
+	if( empty($v["condition"]) ){
+	
+		return "Error: You must inform the condition to be added.";
+	
+	}
+	
+	$conditions = get("conditions");
+	
+	$s["conditions"] = $conditions.";".$v["sender"].":".$v["condition"];
+	
+	set($s);
+	
+	return "Condition added.";
+	
+}
+
+function read_conditions($v){
+
+	if( $v["sender"] != "buyer" && $v["sender"] != "seller" && $v["sender"] != "mediator" ){
+	
+		return "Error: Only the buyer, the seller or the mediator can read the conditions.";
+	
+	}
+	
+	$conditions = get("conditions");
+	
+	return "Conditions: ".$conditions;
+	
+}
+
+function change_buyer($v){
+
+	if( get("status") != "1" ){
+	
+		return "Error: You can only change the buyer when the status of the contract is set to active (1).";
+	
+	}
+	
+	if( empty($v["future_buyer"]) ){
+	
+		return "Error: You must inform the new buyer address.";
+	
+	}
+	
+	if(profile("buyer") == "empty"){
+	
+		change_profile("buyer",$v["future_buyer"]);
+		
+		$s["change_buyer"] = "0";
+	
+		set($s);
+					
+		return "Buyer changed to: ".$v["future_buyer"];
+			
+	}else{
+	
+		if( $v["sender"] != "buyer" ){
+		
+			return "Error: Only the buyer can start the change of the buyer address.";
+		
+		}
+		
+		$s["future_buyer"] = $v["future_buyer"];
+		$s["change_buyer"] = "1";
+			
+		set($s);
+			
+		return "Request to change the buyer has been sent. Now the seller must confirm it.";
+		
+	}
+
+}
+
+function confirm_change_buyer($v){
+
+	if( get("status") != "1" ){
+	
+		return "Error: You can only change the buyer when the status of the contract is set to active (1).";
+	
+	}
+	
+	if( $v["sender"] != "seller" ){
+	
+		return "Error: Only the seller can confirm the change of the buyer address.";
+	
+	}
+	
+	if( get("change_buyer") != "1" ){
+	
+		return "Error: You can only confirm the change of the buyer when the buyer has requested it first.";
+	
+	}
+		
+	change_profile("buyer",get("future_buyer"));
+	
+	$s["future_buyer"] = "empty";
+	$s["change_buyer"] = "0";
+		
+	set($s);
+		
+	return "Buyer changed to: ".$v["future_buyer"];
+	
+}
+
+function change_seller($v){
+
+	if( get("status") != "1" ){
+	
+		return "Error: You can only change the seller when the status of the contract is set to active (1).";
+	
+	}
+	
+	if( empty($v["future_seller"]) ){
+	
+		return "Error: You must inform the new seller address.";
+	
+	}
+	
+	if(profile("seller") == "empty"){
+	
+		change_profile("seller",$v["future_seller"]);
+		
+		$s["change_seller"] = "0";
+			
+		set($s);
+			
+		
+		return "Seller changed to: ".$v["future_seller"];
+			
+	}else{
+	
+		if( $v["sender"] != "buyer" ){
+		
+			return "Error: Only the buyer can start the change of the seller address.";
+		
+		}
+			
+		$s["future_seller"] = $v["future_seller"];
+		$s["change_seller"] = "1";
+			
+		set($s);
+		
+		return "Request to change the seller has been sent. Now the seller must confirm it.";
+		
+	}
+
+}
+
+function confirm_change_seller($v){
+
+	if( get("status") != "1" ){
+	
+		return "Error: You can only change the seller when the status of the contract is set to active (1).";
+	
+	}
+	
+	if( $v["sender"] != "seller" ){
+	
+		return "Error: Only the seller can confirm the change of the seller address.";
+	
+	}
+	
+	if( get("change_seller") != "1" ){
+	
+		return "Error: You can only confirm the change of the seller when the buyer has requested it first.";
+	
+	}
+		
+	change_profile("seller",get("future_seller"));
+	
+	$s["future_seller"] = "empty";
+	$s["change_seller"] = "0";
+		
+	set($s);
+	
+	
+	return "Buyer changed to: ".$v["future_seller"];
+	
+
+}
+
+function change_mediator($v){
+
+	if( get("status") == "3" ){
+	
+		return "Error: You can only change the mediator when the status of the contract is set to active (1) or Mediation (2).";
+	
+	}
+	
+	if( empty($v["future_mediator"]) ){
+	
+		return "Error: You must inform the new mediator address.";
+	
+	}
+	
+	if(profile("mediator") == "empty"){
+	
+		change_profile("mediator",$v["future_mediator"]);
+		
+		$s["change_mediator"] = "0";
+			
+		set($s);
+		
+			
+		return "Mediator changed to: ".$v["future_mediator"];
+			
+	}else{
+	
+		if( $v["sender"] != "buyer" ){
+		
+			return "Error: Only the buyer can start the change of the mediator address.";
+		
+		}
+		
+		$s["future_mediator"] = $v["future_mediator"];
+		$s["change_mediator"] = "1";
+					
+		set($s);
+		
+		return "Request to change the mediator has been sent. Now the seller must confirm it.";
+		
+	}
+	
+
+}
+
+function confirm_change_mediator($v){
+
+	if( get("status") != "1" ){
+	
+		return "Error: You can only change the seller when the status of the contract is set to active (1).";
+	
+	}
+	
+	if( $v["sender"] != "seller" ){
+	
+		return "Error: Only the seller can confirm the change of the mediator address.";
+	
+	}
+	
+	if( get("change_mediator") != "1" ){
+	
+		return "Error: You can only confirm the change of the mediator when the buyer has requested it first.";
+	
+	}
+		
+	change_profile("mediator",get("future_mediator"));
+	
+	$s["change_mediator"] = "0";
+	$s["future_mediator"] = "empty";
+				
+	set($s);
+	
+	return "Buyer changed to: ".$v["future_mediator"];
+
+}
+
+function end_contract($v){
+
+	if( $v["sender"] != "buyer" ){
+	
+		return "Error: Only the buyer can start the end of the contract.";
+	
+	}
+	
+	if( get("status") != "1" ){
+	
+		return "Error: You can only confirm the end of contract when the status is set to active (1).";
+	
+	}
+	
+	if( get("end_contract") == "1" ){
+	
+		return "Error: You have already asked to end the contract.";
+	
+	}
+	
+	$s["end_contract"] = "1";
+				
+	set($s);
+
+	return "Request to end the contract has been sent. Awaiting for the seller to confirm the end of the contract.";
+
+}
+
+function confirm_end_contract($v){
+
+	if( $v["sender"] != "seller" ){
+	
+		return "Error: Only the seller can confirm the end of the contract.";
+	
+	}
+	
+	if( get("status") != "1" ){
+	
+		return "Error: You can only confirm the end of contract when the status is set to active (1).";
+	
+	}
+	
+	if( get("end_contract") != "1" ){
+	
+		return "Error: You can only confirm the end of the contract when the buyer has asked for the end first.";
+	
+	}
+	
+	$s["end_contract"] = "0";
+	$s["status"] = "3";
+				
+	set($s);
+
+	return "Contract ended.";
+
+}
+
+// mediation
+
+function invoke_mediation($v){
+
+	if( $v["sender"] != "buyer" && $v["sender"] != "seller" ){
+	
+		return "Error: Only the buyer or the seller can invoke a mediation.";
+	
+	}
+	
+	if( get("status") != "1" ){
+	
+		return "Error: You can only invoke mediation when the contract status is set to active (1).";
+	
+	}
+	
+	$s["status"] = "2";
+				
+	set($s);
+	
+	return "Mediation invoked.";
+	
+}
+
+function mediation_end($v){
+
+	if( $v["sender"] != "mediator"  ){
+	
+		return "Error: Only the mediator can end a mediation.";
+	
+	}
+	
+	if( get("status") != "2" ){
+	
+		return "Error: You can only end mediation when the contract status is set to mediation (2).";
+	
+	}
+
+	
+	$s["status"] = "1";
+				
+	set($s);
+	
+	return "Mediation ended.";
+	
+}
+
+function mediation_change_buyer($v){
+
+	if( $v["sender"] != "mediator"  ){
+	
+		return "Error: Only the mediator can change the buyer under mediation.";
+	
+	}
+	
+	if( get("status") != "2" ){
+	
+		return "Error: You can only change the buyer under mediation when the contract status is set to mediation (2).";
+	
+	}
+	
+	if( empty($v["new_buyer"]) ){
+	
+		return "Error: You must inform the new buyer address.";
+	
+	}
+	
+	change_profile("buyer",$v["new_buyer"]);
+	
+	return "Buyer changed to: ".$v["new_buyer"];
+	
+}
+
+function mediation_change_seller($v){
+
+	if( $v["sender"] != "mediator"  ){
+	
+		return "Error: Only the mediator can change the seller under mediation.";
+	
+	}
+	
+	if( get("status") != "2" ){
+	
+		return "Error: You can only change the seller under mediation when the contract status is set to mediation (2).";
+	
+	}
+	
+	if( empty($v["new_seller"]) ){
+	
+		return "Error: You must inform the new seller address.";
+	
+	}
+	
+	change_profile("seller",$v["new_seller"]);
+	
+	return "Seller changed to: ".$v["new_seller"];
+
+}
+
+function mediation_end_contract($v){
+
+	if( $v["sender"] != "mediator"  ){
+	
+		return "Only the mediator can end a contract under mediation.";
+	
+	}
+	
+	if( get("status") != "2" ){
+	
+		return "You can only end the contract under mediation when the contract status is set to mediation (2).";
+	
+	}
+	
+	if( empty($v["decision"]) ){
+	
+		return "You can only end the contract informing a decision.";
+	
+	}
+	
+	$s["status"] = "3";
+	$s["decision"] = "decision";
+				
+	set($s);
+
+	return "Contract ended.";
+			
+}
+
+
+
