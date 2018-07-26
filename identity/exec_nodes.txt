@@ -1,0 +1,30 @@
+{
+
+  "execnode1":{
+  
+      "name":"X smart contract",
+      "url":"execnode1.azurewebsites.net",
+      "location":"US East",
+      "description":"Running on Microsoft Azure. Free of charge.",
+      "reputation":"98"
+      
+   },
+   "execnode2":{
+    
+      "name":"Y smart execution",
+      "url":"execnode2.azurewebsites.net",
+      "location":"US East",
+      "description":"Running on Microsoft Azure. Free of charge.",
+      "reputation":"67"
+      
+   },
+   "execnode3":{
+   
+      "name":"Z Dapp solutions",
+      "url":"execnode3.azurewebsites.net",
+      "location":"US East",
+      "description":"Running on Microsoft Azure. Free of charge.",
+      "reputation":"45"
+      
+   }
+}
