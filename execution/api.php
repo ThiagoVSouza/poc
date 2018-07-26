@@ -237,6 +237,7 @@
 				
 	}
 	
+	// retrieves the name and execution nodes of a dapp
 	function get_app($v){
 				
 		$d = get_data("dapps_ids",$s1);
@@ -270,6 +271,7 @@
 		
 	};	
 
+	// Main function on this api
 	function execute_app($v){
 		
 		
