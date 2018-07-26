@@ -1,6 +1,6 @@
 <?
 
-	///////////////
+	/////////////// Hard coded verification of the current node id
 
 	if($_SERVER['HTTP_HOST'] == "execnode1.azurewebsites.net"){
 		
@@ -16,10 +16,7 @@
 				
 	}
 	
-	
-	// include_once "library.php";
-	
-
+	// Received variables from an identity node
 	$v = $_POST["v"];
 	
 		/// explode no v
@@ -35,7 +32,8 @@
 			$c["$param"] = $valor;
 					
 		};
-		
+
+	// Verifies if the node is requesting a function that exists
 	if (function_exists($c["sys_c"])) {
 	
 		$r = call_user_func($c["sys_c"],$c);
@@ -56,42 +54,16 @@
 	
 	};
 	
-	/// envia a resposta!
+	/// sends response
 		
 	$r = str_replace("\r", "", $r);
 	$r = str_replace("\n", "", $r);
 	$r = str_replace("\t", "", $r);
 	
-	if(empty($c["sys_s"])){
-			
-		$c["sys_s"] = 1;
-		
-	};
-	
-	if(empty($c["sys_v"])){
-	
-		$c["sys_v"] = 0;
-		
-	};
-	
-	if(empty($c["p"])){
-	
-		$c["p"] = 0;
-		
-	};
-	
-	$r = str_replace("{p}", $c["p"], $r);
-	$r = str_replace("{v}", $c["sys_v"], $r);
-	$r = str_replace("{s}", $c["sys_s"], $r);
-				
-	// echo utf8_encode($r);
-	
-	// 
-	
 	echo utf8_encode($r);
 	
 	
-	//////// FUNCTIONS
+	//////// MAIN FUNCTIONS
 
 
 	function new_app($v){
@@ -129,14 +101,6 @@
 		
 		$hash = md5($config.$permissions.$dapp1);
 		
-		// $r["error"] = "true";
-		// $r["error_message"] = "Config:".strlen($config);
-	
-		// return $r;
-		
-		
-		
-		
 		// verifica um novo id para a app
 		
 		$resp = com("sys_c:new_dapp|id_node:".$GLOBALS["server"]."|chain:".$v["chain"]."|hash:".$hash."|","oraclenode1.azurewebsites.net/api.php");
@@ -153,11 +117,6 @@
 			
 			$id = $resp["response"];
 			
-			// $r["error"] = "false";
-			// $r["response"] = "Dapp created with id: ".$id;
-		
-			// return $r;
-			
 		}else{
 			
 			$r["error"] = "true";
@@ -167,10 +126,8 @@
 			
 		}
 		
-		// cria os arquivos
-		
-			// config , e atualiza com dados recebidos
-			
+		// create local dapp files (config, permissions and content)
+					
 				$config1 = json_decode($config,true);
 			
 				set_data("config_".$id,$config1);
@@ -193,25 +150,10 @@
 				set_data("data_".$id,$s2);
 				
 				
-				
-				///////////// SIGN on blockchain
-				
-				/*
-				
-				if(empty($v["hash"])){
-			
-				if(empty($v["dapp_id"])){
-		
-				if(empty($v["id_node"])){
-		
-				if(empty($v["action"])){
-		
-				*/
-				
 				$resp = com("sys_c:sign|id_node:".$GLOBALS["server"]."|dapp_id:".$id."|action:hash|hash:".$hash."|","oraclenode1.azurewebsites.net/api.php");
 	
 				
-				
+			// Final response to the identity node	
 				
 			$r["error"] = "false";
 			$r["response"] = "App_id:".$id;
@@ -221,6 +163,7 @@
 				
 	}
 	
+	// Clone funtion of new_app
 	function new_app2($v){
 		
 		if(empty($v["name"])){
@@ -256,53 +199,11 @@
 		
 		$hash = md5($config.$permissions.$dapp1);
 		
-		// $r["error"] = "true";
-		// $r["error_message"] = "Config:".strlen($config);
-	
-		// return $r;
-		
-		
-		
-		
-		// verifica um novo id para a app
-		
-		/*
-		
-		$resp = com("sys_c:new_dapp|id_node:".$GLOBALS["server"]."|chain:".$v["chain"]."|hash:".$hash."|","oraclenode1.azurewebsites.net/api.php");
-	
-		if($resp["error"] == "true"){
-			
-			$r["error"] = "true";
-			$r["error_message"] = "Not able to create Dapp on the blockchain.";
-			$r["node_message"] = "node:".$resp["error_message"];
-		
-			return $r;
-						
-		}else if($resp["error"] == "false"){
-			
-			$id = $resp["response"];
-			
-			// $r["error"] = "false";
-			// $r["response"] = "Dapp created with id: ".$id;
-		
-			// return $r;
-			
-		}else{
-			
-			$r["error"] = "true";
-			$r["error_message"] = "Unkown blockchain error:".implode(",",$resp);
-		
-			return $r;
-			
-		}
-		
-		*/
-		
+		// This is the id of the new dapp on the oracle
 		$id = $v["id"];
 		
-		// cria os arquivos
+		// create local dapp files (config, permissions and content)
 		
-			// config , e atualiza com dados recebidos
 			
 				$config1 = json_decode($config,true);
 			
@@ -356,7 +257,7 @@
 			$r["error"] = "false";
 			$r["response"] = "App found.";
 			$r["id"] = $id[0];
-			$r["name"] = $c["Name"]; // ."-"."config_".$id[0]
+			$r["name"] = $c["Name"]; 
 			$r["chain"] = $c["Nodes"];
 		
 		
@@ -412,7 +313,7 @@
 		
 		$file = get_data("file_".$v["dapp_id"]);
 				
-		/// HASH inicial $hash_inicial
+		/// HASH initial : $hash_inicial
 		
 		$config = file_get_contents("config_".$v["dapp_id"].".txt");
 		$permissions = file_get_contents("permissions_".$v["dapp_id"].".txt");
@@ -421,19 +322,14 @@
 		
 		$hash_inicial = md5($config.$permissions.$dados.$dapp1);
 		
+		// >>>>> this is main thing. I am using eval to execute a dapp that is essentially a php file
+		// it loads all the function in this file on the memory and them parses the variables received and 
+		// finally calls the function with the parameters and gives the return of the function as a response to the node
 		
 		try {
 			
 			eval($file["content"]);
-			
-			// $arr = get_defined_functions();
-			
-			// $r["error"] = "true";
-			// $r["error_message"] = "System error 1: ".implode(",",$arr["user"])." - ";
-			
-			// return $r;
-			
-			
+		
 		} catch (Exception $e) {
 		
 			$r["error"] = "true";
@@ -443,9 +339,7 @@
 			
 		}
 		
-		// {#124}
-		
-		$h1 = explode("{#124}",$v["params"]);
+		$h1 = explode("{#124}",$v["params"]); ///
 				
 		foreach($h1 as $value1){
 		
@@ -466,10 +360,12 @@
 		$params["sender"] = "unknown";
 		$params["identity"] = $v["identity"];
 		
+		/// This thing bellow is an ugly hard coded check to verify the identity of the sender 
+		/// Where in ethereum you have msg.sender, in this I have profiles (A permissioned system)
+		/// As this sample dapp only stores 3 profiles i used it hard coded
+		
 		if(strpos($buyer,$v["identity"]) === false){
-
-			
-			
+	
 		}else{
 			
 			$params["sender"] = "buyer";
@@ -478,27 +374,22 @@
 		}
 		
 		if(strpos($seller,$v["identity"]) === false){
-
-			
-			
+	
 		}else{
 			
 			$params["sender"] = "seller";
-			
-			
+		
 		}
 		
 		if(strpos($mediator,$v["identity"]) === false){
-
-			
-			
+		
 		}else{
 			
 			$params["sender"] = "mediator";
 			
-			
 		}
 		
+		/// Verifies if the function evoked on the smart contract exists
 		
 		if (function_exists($v["action"])) {
 	
@@ -506,7 +397,7 @@
 				
 				$r = call_user_func($v["action"],$params);
 				
-				/// Verifica se teve mudança de estado
+				/// verifies if there was a change in the smart contract data
 			
 				$config = file_get_contents("config_".$v["dapp_id"].".txt");
 				$permissions = file_get_contents("permissions_".$v["dapp_id"].".txt");
@@ -515,9 +406,10 @@
 				
 				$hash_final = md5($config.$permissions.$dados.$dapp1);
 				
-				
+				/// compares the hash computed before invoking the function with the one after it.
 				if($hash_inicial != $hash_final){
 					
+					// if it is different you need to sign a new hash on the blockchain
 					$resp = com("sys_c:sign|id_node:".$GLOBALS["server"]."|dapp_id:".$v["dapp_id"]."|action:hash|hash:".$hash_final."|","oraclenode1.azurewebsites.net/api.php");
 	
 					$sign = "yes";
@@ -530,7 +422,7 @@
 	
 			
 				$s["error"] = "false";
-				$s["response"] = "Dapp answer: ".$r.""; // [".$sign."]
+				$s["response"] = "Dapp answer: ".$r.""; // This is the information you are going to see on the UI log
 				
 				return $s;
 			
@@ -558,6 +450,8 @@
 		
 	}
 
+
+	// DAPP function (get current dapp stored data)
 	function get($v1){
 		
 		$n = get_data("data_".$GLOBALS["dapp_id"]);
@@ -566,14 +460,14 @@
 	
 	}
 	
+	// DAPP function (set current dapp stored data)
 	function set($z){
-		
-		// $z[$v1] = $v2;
 		
 		set_data("data_".$GLOBALS["dapp_id"],$z);
 				
 	}
 	
+	// DAPP function (get current dapp profiles)
 	function profile($v1){
 		
 		$n = get_data("permissions_".$GLOBALS["dapp_id"]);
@@ -583,54 +477,16 @@
 		
 	}
 	
+	// DAPP function (set current dapp profiles)
 	function change_profile($v1,$v2){
 		
 		$z[$v1] = $v2;
 		
 		set_data("permissions_".$GLOBALS["dapp_id"],$z);
-		
-		
+	
 	}
-	
-	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	// General function to retrieve data simulating a database
 	function get_data($arquivo){
 		
 		$myfile = fopen( $arquivo.".txt" , "r");
@@ -645,6 +501,7 @@
 		
 	}
 	
+	// General function to insert or update data simulating a database
 	function set_data($arquivo,$var){
 		
 		// check if file exists
@@ -676,13 +533,6 @@
 							
 		}
 		
-		/*
-		foreach($r as $key => $valor){
-			
-			echo "<br/> 1 -- ".$key." / ".$valor."<br/>";
-			
-		}
-		*/
 		
 		$r1 = json_encode($r);
 		
@@ -718,319 +568,5 @@
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	/*
-	
-		|||||||||||  Data Structure
-		
-		- id node list
-		
-		- smart contract list
-		
-		- file list
-		
-		- 
-		
-	
-		||||||||||||  Smart Contract Structure
-		
-			config		> sc_#nameofsmartcontract
-			
-			files		> file_#nameofsmartcontract_#nameoffile_#version
-			data		> data_#nameofsmartcontract
-	
-	
-			>>> Main File
-			
-				<config>
-					exec nodes / hash
-					id
-					main function
-					other meta data
-						_permissions (later
-				</config>
-				
-				<files>name/hashsignatures</files>
-				<data>name/hashsignature</data>
-				
-	
-		||||||||||||  Smart Contract Special Functions
-		
-				save_data();
-				load_data();
-				
-				add_new_identity();
-				sign(); ????
-	
-			>>> Example:
-			
-				<config>
-					<exec_nodes>
-						#node1
-						#node2
-						#node3
-					<exec_nodes>
-					<id>
-						#contractid (comes from the oracle)
-					</id>
-					<main_function>
-						init
-					</main_function>
-					<meta>
-						server data created
-					</meta>
-					<identities>
-						<profile1>
-							<id_node1>
-								#idhash1
-							</id_node1>
-							<id_node2>
-								#idhash2
-							</id_node2>
-							<id_node3>
-								#id_hash3
-							</id_node3>
-						</profile1>
-						<profile2>
-							<id_node1>
-								#idhash4
-							</id_node1>
-							<id_node2>
-								#idhash5
-							</id_node2>
-							<id_node3>
-								#id_hash6
-							</id_node3>
-						</profile2>
-					</identities>
-				</config>
-			
-				<files>
-					<file>
-						<name>
-						</name>
-						<signature>
-						</signature>
-					</file>
-				</files>
-				
-				<data>
-					<siganture>
-						#hashsign
-					</signature>
-				</data>
-				
-	
-			>>> Basic escrow: main 
-	
-	
-	
-			function init($v){
-				
-				set_data("contract_status","1");
-				set_data("seller",$v["profile1"]);
-				set_data("buyer",$v["profile2"]);
-				set_data("price",$v["price"]);
-				
-				set_data("mediator",$v["mediator"]);
-				set_data("mediator_fee",$v["mediator_fee"]);
-				
-				set_data("mediator_change","0");
-				
-				set_data("mediation","0");
-				
-				set_data("end_contract","0");
-				
-				set_data("mediation_invoked","0");
-								
-			}
-			
-			function change_mediator($v){
-				
-				if( $v["sender"] != profile("profile1") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("mediator_change","1");
-				
-				set_data("future_mediator",$v["future_mediator"]);
-				
-				set_data("future_mediator_fee",$v["future_mediator_fee"]);
-								
-			}
-			
-			function confirm_change_mediator($v){
-				
-				if( $v["sender"] != profile("profile2") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_profile("profile3",get_data("future_mediator"));
-				
-				set_data("mediator_change","0");
-				
-				set_data("future_mediator","");
-				
-				set_data("future_mediator_fee","");
-												
-			}
-			
-			function end_contract($v){
-				
-				if( $v["sender"] != profile("profile1") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("end_contract","1");
-							
-			}
-			
-			function confirm_end_contract($v){
-				
-				if( $v["sender"] != profile("profile2") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("end_contract","0");
-				
-				set_data("contract_status","3");
-				
-				end_smart_contract();
-				
-			}
-			
-			// Mediation
-			
-			function call_mediation($v){
-				
-				if( $v["sender"] != profile("profile2") || $v["sender"] != profile("profile1") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("status","2");
-				
-				set_data("mediation_invoked","1");
-				
-				
-				
-			}
-			
-			function mediation_end($v){
-				
-				if( $v["sender"] != profile("profile3") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("status","1");
-				
-				
-			}
-			
-			function mediation_end_contract($v){
-				
-				if( $v["sender"] != profile("profile3") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("status","3");
-				
-			}
-			
-			function mediation_change_buyer($v){
-				
-				if( $v["sender"] != profile("profile3") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("buyer",$v["buyer"]);
-				
-				set_profile("profile1",$v["buyer"]);
-				
-			}
-			
-			function mediation_change_seller($v){
-				
-				if( $v["sender"] != profile("profile3") ){
-					
-					return error("Profile does not have permission to execute this action!");
-					
-				}
-				
-				set_data("seller",$v["seller"]);
-				
-				set_profile("profile2",$v["buyer"]);
-				
-			}
-			
-	
-	
-	
-	*/
-
 
 ?>
