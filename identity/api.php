@@ -14,6 +14,8 @@
 				
 	}
 	
+	// Data received by the UI node
+	
 	$v = $_POST["v"];
 	
 		$h = explode("|",$v);
@@ -28,6 +30,8 @@
 					
 		};
 		
+	// checks if the user called a function that exists.
+
 	if (function_exists($c["sys_c"])) {
 	
 		$r = call_user_func($c["sys_c"],$c);
@@ -48,7 +52,7 @@
 	
 	};
 	
-	/// sends response
+	/// sends response back to the user.
 		
 	$r = str_replace("\r", "", $r);
 	$r = str_replace("\n", "", $r);
