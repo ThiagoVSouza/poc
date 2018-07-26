@@ -2,6 +2,15 @@
 
 This folder has all the template files for the deployment of a new one on one smart contract.
 It also features a full set of mediation system.
+This smart contract could be used to simulate a purchase of a product or a service.
+
+## Config.txt
+
+Has a basic configuration, the only important part is the custom name given by the user that is passed on when someone else retrieves the dapp.
+
+## Permissions.txt
+
+basic permissions, essentially the role of users available on this smart contract.
 
 ## Dapp1.txt
 
@@ -75,10 +84,3 @@ function mediation_end_contract($v)
 Mediator ends the contract. Also changes the status on the blockchain.
 
 
-## Config.txt
-
-Has a basic configuration, the only important part is the custom name given by the user that is passed on when someone else retrieves the dapp.
-
-## Permissions.txt
-
-basic permissions, essentially the role of users available on this smart contract.
