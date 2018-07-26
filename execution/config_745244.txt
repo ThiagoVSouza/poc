@@ -1,0 +1,5 @@
+{
+  "Template":"Escrow v1.0",
+  "Name":"Jackdapp",
+  "Nodes":"execnode1,execnode2,execnode3,"
+}
